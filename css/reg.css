@@ -1,0 +1,15 @@
+.mui-bar-nav{
+	/*border: 1px solid red;*/
+	background-color: #036;
+	border-bottom: 2px solid #fc6;
+}
+.mui-icon-left-nav:before{
+	color: #fc6;
+}
+.mui-title{
+	color: #fc6;
+}
+.mui-btn{
+	color: #fc6;
+	background: #036;
+}

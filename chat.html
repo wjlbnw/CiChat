@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link href="css/chat.css" rel="stylesheet" />
+		<link href="css/mui.imageviewer.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="js/mui.js"></script>
+		<script src="js/vue.min.js"></script>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">chating with ...</h1>
+		</header>
+		<pre id='h'></pre>
+		<div class="mui-content">
+			<div id='msg-list'>
+				<div v-for="(item,index) in record" class="msg-item" :class="{'msg-item-self':item.sender=='self'}" :msg-type='item.type' :msg-content='item.content' @tap="tapItem(index,$event)">
+					<img v-if="item.sender=='self'" class="msg-user msg-user-img mui-icon" src="img/userPhoto.jpg">
+					<img v-else class="msg-user-img" src="img/MainPictuer.net.png" alt="" />
+					<div class="msg-content">
+						<div class="msg-content-inner">
+							<div v-if="item.type=='text'">{{item.content|| '&nbsp;&nbsp;'}}</div>
+							<img v-else-if="item.type=='image'" class="msg-content-image" :src="item.content" style="max-width: 100px;" />
+							<div v-else>
+								<span class="mui-icon mui-icon-mic" style="font-size: 18px;font-weight: bold;"></span>
+								<span class="play-state">{{item.state?item.state:item.state='点击播放'}}</span>
+							</div>
+						</div>
+						<div class="msg-content-arrow"></div>
+					</div>
+					<div class="mui-item-clear"></div>
+				</div>
+			</div>
+		</div>
+		<footer>
+			<div class="footer-left">
+				<i id='msg-image' class="mui-icon mui-icon-camera" style="font-size: 28px;"></i>
+			</div>
+			<div class="footer-center">
+				<textarea id='msg-text' type="text" class='input-text'></textarea>
+				
+				<button id='msg-sound' type="button" class='input-sound' style="display: none;">按住说话</button>
+				
+			</div>
+			
+			<label for="" class="footer-right">
+				<i id='msg-type' class="mui-icon mui-icon-mic"></i>
+			</label>
+		</footer>
+		<div id='sound-alert' class="rprogress">
+			<div class="rschedule"></div>
+			<div class="r-sigh">!</div>
+			<div id="audio_tips" class="rsalert">手指上滑，取消发送</div>
+		</div>
+		<script src="js/mui.imageViewer.js"></script>
+		<script src="js/chat.js"></script>
+	</body>
+
+</html>

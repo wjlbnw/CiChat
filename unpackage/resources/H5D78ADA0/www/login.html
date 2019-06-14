@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/login.css" />
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		
+		
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<img src="img/MainPictuer.net.png"  class="user-photo"/>
+				<h3 class="text-fallow-img">CiChat</h3>
+			</div>
+			<form id='login-form' class="mui-input-group">
+				<div class="mui-input-row">
+					<input id='account' type="text" class="mui-input-clear mui-input" placeholder="账号">
+				</div>
+				<div class="mui-input-row">
+					<input id='password' type="password" class="mui-input-password mui-input" placeholder="密码">
+				</div>
+			</form>
+			<form class="mui-input-group">
+				<ul class="mui-table-view mui-table-view-chevron">
+					<li class="mui-table-view-cell">
+						自动登录
+						<div id="autoLogin" class="mui-switch">
+							<div class="mui-switch-handle"></div>
+						</div>
+					</li>
+				</ul>
+			</form>
+			<div class="mui-content-padded">
+				<button id='login' type="button" class="mui-btn mui-btn-block mui-btn-primary">登入</button>
+				<div class="link-area">
+					<a id='reg'>注册账号</a> <span class="spliter">|</span> <a id='forgetPassword'>忘记密码</a>
+				</div>
+			</div>
+			<div class="mui-content-padded oauth-area">
+				
+			</div>
+		</div>
+		<script>
+			mui.plusReady(function() {
+				var height1 = plus.android.invoke(plus.android.currentWebview(), "getHeight");//高度物理分辨率
+				var height2 = plus.screen.resolutionHeight;//高度逻辑分辨率
+				var top = plus.navigator.getStatusbarHeight();//状态栏高度
+				document.getElementsByClassName("mui-content")[0].style.height = (height2) + "px";
+				console.log(height1);//1920
+				console.log(height2);//640
+				console.log(top);//22
+			});
+			mui.plusReady(function() {
+				var height1 = plus.android.invoke(plus.android.currentWebview(), "getHeight");//高度物理分辨率
+				var height2 = plus.screen.resolutionHeight;//高度逻辑分辨率
+				var top = plus.navigator.getStatusbarHeight();//状态栏高度
+				document.getElementsByClassName("mui-content")[0].style.height = (height2-top) + "px";
+				console.log(height1);//1920
+				console.log(height2);//640
+				console.log(top);//22
+			});
+			mui.plusReady(function() {
+		        plus.navigator.setStatusBarBackground("#003366");
+		    });
+		</script>
+		<!--页面跳转基础-->
+		<script type="text/javascript" src="js/JQ.js" ></script>
+		<script>
+			//mui.toast("JQ");
+//			mui('.link-area').on('tap','#reg',function(){
+//				mui.toast("123");
+//			});
+			$('#reg').bind('tap',function(){
+				mui.toast("注册一个账号");
+				mui.openWindow({
+							url: 'reg.html',
+							id: 'reg',
+							preload: true,
+							show: {
+								aniShow: 'pop-in'
+							},
+							styles: {
+								popGesture: 'hide'
+							},
+							waiting: {
+								autoShow: false
+							}
+						});
+			});
+			
+			
+			
+			
+			$('#login').bind('tap',function(){
+				mui.openWindow({
+							url: 'index.html',
+							id: 'index',
+							preload: true,
+							show: {
+								aniShow: 'zoom-fade-out'
+							},
+							styles: {
+								popGesture: 'hide'
+							},
+							waiting: {
+								autoShow: false
+							}
+						});
+			});
+			
+		</script>
+		
+	</body>
+
+</html>

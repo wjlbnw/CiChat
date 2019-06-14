@@ -1,0 +1,10 @@
+.mui-bar{
+	background-color: #036;
+}
+.mui-bar-tab .mui-tab-item{
+	color: #963;
+}
+
+.mui-bar-tab .mui-tab-item.mui-active{
+	color: #fc6;
+}

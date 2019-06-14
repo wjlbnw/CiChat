@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style>
+			/*点击变蓝色高亮*/
+			.mui-table-view-cell.mui-active{
+				background-color: #036;
+				color: #FFF;
+			}
+			.mui-content>.mui-table-view:first-child{
+				margin-top: 0px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<div class="mui-input-row mui-search" id="searchForm">
+			    <input type="search" id="searchInput" onkeyup="enterSearch(event)" class="mui-input-clear" placeholder="搜索用户/房间">
+			</div>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">Item 1</li>
+				<li class="mui-table-view-cell">Item 2</li>
+				<li class="mui-table-view-cell">Item 3</li>
+			</ul>
+		</div>
+			
+		<script src="../js/vue.min.js"></script>
+		<script type="text/javascript">
+			 function enterSearch(event){
+					if(event.keyCode == 13) {//用户点击回车的事件号为13
+						var keyword = document.getElementById('searchInput').value;
+						alert(keyword);
+					}
+				}
+		</script>
+	</body>
+
+</html>

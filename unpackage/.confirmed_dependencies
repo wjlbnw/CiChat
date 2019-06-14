@@ -1,0 +1,19 @@
+{
+	"login.html": {
+		"refer": [
+			"reg.html",
+			"index.html"
+		]
+	},
+	"index.html": {
+		"resources": [
+			"pages/chat.html"
+		],
+		"refer": [
+			"pages/contact.html",
+			"pages/chat.html",
+			"pages/search.html",
+			"pages/userSetting.html"
+		]
+	}
+}
