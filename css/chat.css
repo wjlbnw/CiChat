@@ -85,14 +85,14 @@ footer {
 .msg-item .msg-user {
 	width: 38px;
 	height: 38px;
-	border: solid 1px #d3d3d3;
+	/* border: solid 1px #d3d3d3; */
 	display: inline-block;
 	background: #fff;
-	border-radius: 3px;
+	border-radius: 19px;
 	vertical-align: top;
 	text-align: center;
-	float: left;
-	padding: 3px;
+	/* float: left; */
+	/* padding: 3px; */
 	color: #ddd;
 }
 
@@ -103,8 +103,9 @@ footer {
 	border-radius: 3px;
 	vertical-align: top;
 	text-align: center;
+	font-size: 14px;
 	float: left;
-	color: #ddd;
+	color: #999;
 }
 
 .msg-item .msg-content {

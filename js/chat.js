@@ -1,10 +1,19 @@
 const imageViewer = new mui.ImageViewer('.msg-content-image', {
 			dbl: false
 		});
+		
+let main= null;
+let ui=null;
 let msgList=new Vue({
 	el:'#msg-list',
 	data:{
-		record:[{
+		record:[
+			{
+					sender: 'zs',
+					type: 'sound',
+					content: 'http://192.168.3.12:8123/res/image/test.mp3'
+				},
+			{
 					sender: 'zs',
 					type: 'text',
 					content: '没有保存本地记录'
@@ -25,21 +34,10 @@ let msgList=new Vue({
 			return this.record;
 		},
 		tapItem:function(index,event){
-			// 
-			// let msgType = msgItem.getAttribute('msg-type');
-			// let msgContent = msgItem.getAttribute('msg-content');
-			// // mui.toast(msgContent);
-			// if (msgType == 'sound') {
-			// 	let player = plus.audio.createPlayer(msgContent);
-			// 	let playState = msgItem.querySelector('.play-state');
-			// 	playState.innerText = '正在播放...';
-			// 	player.play(function() {
-			// 		playState.innerText = '点击播放';
-			// 	}, function(e) {
-			// 		playState.innerText = '点击播放';
-			// 	});
-			// }
 			if (this.record[index].type == 'sound') {
+				if(this.record[index].state == '正在播放...'){
+					return;
+				}
 				let player = plus.audio.createPlayer(this.record[index].content);
 				// let playState = msgItem.querySelector('.play-state');
 				this.record[index].state = '正在播放...';
@@ -55,6 +53,9 @@ let msgList=new Vue({
 	},
 	updated() {
 		imageViewer.findAllImage();
+		if(ui){
+			ui.areaMsgList.scrollTop = ui.areaMsgList.scrollHeight + ui.areaMsgList.offsetHeight+1000;
+		}
 	}
 });
 // msgList.getRecord()[0].content="改变之后的content";
@@ -91,15 +92,16 @@ let msgList=new Vue({
 		/* 
 		自适应窗口大小 
 		 */
+		doc.querySelector('#title').innerText='chat with '+plus.webview.currentWebview().facer_name;
 		plus.webview.currentWebview().setStyle({
 			softinputMode: "adjustResize"
 		});
 		
-		
+		main=plus.webview.getWebviewById('index');
 		/* 
 		ui控件获取
 		 */
-		let ui = {
+		ui = {
 			body: doc.querySelector('body'),
 			footer: doc.querySelector('footer'),
 			footerRight: doc.querySelector('.footer-right'),
@@ -172,8 +174,8 @@ let msgList=new Vue({
 			if(!item) return ;
 			item.state='点击播放';
 			msgList.getRecord().push(item);
-			imageViewer.findAllImage();
-			ui.areaMsgList.scrollTop = ui.areaMsgList.scrollHeight + ui.areaMsgList.offsetHeight;
+			// imageViewer.findAllImage();
+			// ui.areaMsgList.scrollTop = ui.areaMsgList.scrollHeight + ui.areaMsgList.offsetHeight+100;
 		}
 		
 		/* 
@@ -184,7 +186,9 @@ let msgList=new Vue({
 		 */
 		function send(msg) {
 			pushMes(msg);
+			msg.receiver=plus.webview.currentWebview().facer_name;
 			
+			mui.fire(main,'send',msg);
 			
 			/* record.push(msg);
 			bindMsgList();
@@ -356,3 +360,10 @@ let msgList=new Vue({
 	});
 	
 })(mui,document);
+ window.addEventListener('receive',function(event){
+	 console.log('触发事件，添加');
+	msgList.getRecord().push(event.detail);
+ });
+
+
+	

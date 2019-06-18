@@ -15,14 +15,22 @@
 		<script src="js/vue.min.js"></script>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">chating with ...</h1>
+			<h1 class="mui-title" id="title">chating with ...</h1>
 		</header>
 		<pre id='h'></pre>
 		<div class="mui-content">
 			<div id='msg-list'>
 				<div v-for="(item,index) in record" class="msg-item" :class="{'msg-item-self':item.sender=='self'}" :msg-type='item.type' :msg-content='item.content' @tap="tapItem(index,$event)">
-					<img v-if="item.sender=='self'" class="msg-user msg-user-img mui-icon" src="img/userPhoto.jpg">
-					<img v-else class="msg-user-img" src="img/MainPictuer.net.png" alt="" />
+					<!-- <img v-if="item.sender=='self'" class="msg-user msg-user-img mui-icon" src="img/userPhoto.jpg">
+					<img v-else class="msg-user-img" src="img/MainPictuer.net.png" alt="" /> -->
+					<label v-if="item.sender=='self'" class="msg-user msg-user-img">
+						<img class="msg-user msg-user-img" src="img/userPhoto.jpg">
+						{{item.sender}}
+					</label>
+					<label v-else class="msg-user-img">
+						<img class="msg-user-img" src="img/MainPictuer.net.png" alt="" />
+						{{item.sender}}
+					</label>
 					<div class="msg-content">
 						<div class="msg-content-inner">
 							<div v-if="item.type=='text'">{{item.content|| '&nbsp;&nbsp;'}}</div>

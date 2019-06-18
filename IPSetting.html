@@ -5,15 +5,83 @@
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/reg.css" />
 	</head>
-
+	
 	<body>
-		<script src="../js/mui.min.js"></script>
+		<script src="js/mui.min.js"></script>
 		<script type="text/javascript">
 			mui.init()
 		</script>
-		IP setting
+		
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">IP设置</h1>
+		</header>
+		<div class="mui-content" id='IPset'>
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>IP地址</label>
+					<input id='IntAddress' type="text" class="mui-input-clear mui-input">
+				</div>
+				<div class="mui-input-row">
+					<label>端口号</label>
+					<input id='port' type="text" class="mui-input-clear mui-input">
+				</div>
+			</form>
+			<div class="mui-content-padded">
+				<button id='saveIP' class="mui-btn mui-btn-block mui-btn-primary">保存服务器地址</button>
+			</div>
+			<div class="mui-content-padded">
+				
+			</div>
+		</div>
+		<script>
+			mui.plusReady(function () {
+				let address=document.querySelector('#IntAddress');
+				let port=document.querySelector('#port');
+				
+				document.addEventListener('showWebview',function(){
+					let message=localStorage.getItem('server-ip-config');
+					if(message!=null){
+						let config=JSON.parse(message);
+						address.value=config.add;
+						port.value=config.port;
+					}
+				});
+				
+				
+				mui('#IPset').on('tap','#saveIP',function(){
+					// mui.toast('save');
+					let ipReg=/^(\d{1,3}\.){3}\d{1,3}$/;
+					let portReg=/^\d{1,5}$/;
+					if(ipReg.test(address.value)){
+						if(portReg.test(port.value)){
+							localStorage.setItem('server-ip-config',JSON.stringify({
+								add:address.value,
+								port:port.value
+							}));
+							mui.toast('保存成功');
+							mui.back();
+							
+							
+						}else{
+							mui.toast('端口号异常');
+						}
+						
+					}else{
+						mui.toast('地址格式异常');
+					}
+					
+					
+				});
+			});
+		</script>
+		
+		
+		
+		
 	</body>
 
 </html>

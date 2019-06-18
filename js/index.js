@@ -1,5 +1,6 @@
 const pageList=['./pages/chat.html','./pages/contact.html','./pages/search.html','./pages/userSetting.html'];
 const pageIds=['chat','contact','search','setting'];
+
 let pages=[];
 let activePage={};
 let pageStyle={
@@ -46,9 +47,71 @@ document.addEventListener('plusready', function(){
 	activePage=pages[0];
 	plus.webview.show(pages[0],);
 	
+	/* 建立连接 */
+	function serURL(){
+				let serverIP=localStorage.getItem('server-ip-config');
+				let url=null;
+				if(serverIP){
+					serverIP=JSON.parse(serverIP);
+					url='http://'+serverIP.add+':'+serverIP.port;
+				}
+				return url;
+			}
+	const socket=io.connect(serURL());
 	
-	/*
- 
+	socket.on('connect',function(){
+		let user=JSON.parse(plus.storage.getItem('user_info'));
+		// console.log(user.username);
+		socket.emit('initChat',user.username);
+	});
+	socket.on('getConnectors',function(connectors){
+		console.log(connectors[0].id);
+		mui.toast('拉取好友列表');
+		mui.fire(pages[1],'InitList',connectors);
+		mui.fire(pages[0],'initchatlist',connectors);
+	});
+	socket.on('receive',function(message){
+		console.log('收到消息，来自'+message.sender);
+		let chating=plus.webview.getWebviewById('chatWindow-'+message.sender);
+		console.log(JSON.stringify(message));
+		if(chating){
+			if(message.type=='sound'||message.type=='image'){
+				message.content=serURL()+message.content;
+				console.log(JSON.stringify(message.content));
+			}
+			mui.fire(chating,'receive',message);
+		}
+		mui.fire(pages[0],'receive',message);
+	});
+	window.addEventListener('send',function(event){
+		let message=event.detail;
+		let user=JSON.parse(plus.storage.getItem('user_info'));
+		message.sender=user.username;
+		
+		if(message.type=='image'||message.type=='sound'){
+			// console.log(111111111);
+		    let task = plus.uploader.createUpload( serURL()+"/upload", 
+		        { method:"POST",blocksize:204800,priority:100 },
+		        function ( t, status ) {
+		            // 上传完成
+		            console.log(t);
+		            if ( status == 200 ) { 
+		                mui.toast( "Upload success: " + t.url );
+		            } else {
+		                mui.toast( "Upload failed: " + status );
+		            }
+		        }
+		    );
+		    task.addFile(message.content, {key:"file"} );
+			task.addData('message',JSON.stringify(message));
+		    task.start();
+		}
+		else{
+			socket.emit('send',message);
+		}
+			
+	});
+/*
  * 
  * 
  * JQuery操作域
@@ -75,28 +138,9 @@ document.addEventListener('plusready', function(){
 	
 
 },false); 
-/*
- *页面转换响应 
- * */
-//mui.ready(function(){
-//	mui("#tabBar").off('tap', '.mui-tab-item', function() {
-//		mui.toast('tap');
-//	});
-//	
-//});
 
-/*
- 
- * 
- * 
- * JQuery操作域
- * */
-/*(function(){
-	$(function(){
-		$('.mui-bar-tab .mui-tab-item').bind('tap',function(e){
-			
-			$(this).removeClass("mui-active");
-			mui.toast('yichu');
-		});
-	})
-})(jQuery);*/
+
+
+
+
+

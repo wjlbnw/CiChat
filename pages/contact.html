@@ -64,7 +64,7 @@
 					<div class="mui-slider-cell">
 						<div class="oa-contact-cell mui-table">
 							<div class="oa-contact-avatar mui-table-cell">
-								<img src="../img/userPhoto.jpg" />
+								<img :src="con.type=='暗线'?'../img/userPhoto.jpg':'../img/roomPhoto.jpg'" />
 							</div>
 							<div class="oa-contact-content mui-table-cell">
 								<div class="mui-clearfix">
@@ -86,64 +86,42 @@
 				el:"#contact",
 				data:{
 					contacts:[
-						{
-							name:'name1',
-							type:'暗线',
-							msg:'有内鬼'
-						},
-						{
-							name:'name1',
-							type:'暗线',
-							msg:'有内鬼'
-						},
-						{
-							name:'name1',
-							type:'暗线',
-							msg:'有内鬼'
-						},
-						{
-							name:'name1',
-							type:'暗线',
-							msg:'有内鬼'
-						},
-						{
-							name:'name1',
-							type:'暗线',
-							msg:'有内鬼'
-						},
-						{
-							name:'name1',
-							type:'暗线',
-							msg:'有内鬼'
-						},
-						{
-							name:'name1',
-							type:'暗线',
-							msg:'有内鬼'
-						},
-						{
-							name:'name1',
-							type:'暗线',
-							msg:'有内鬼'
-						},
-						{
-							name:'name1',
-							type:'暗线',
-							msg:'有内鬼'
-						},
-						{
-							name:'name1',
-							type:'暗线',
-							msg:'有内鬼'
-						},
-						{
-							name:'room',
-							type:'房间',
-							msg:'文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本'
-						}
+						// {
+						// 	id:10000,
+						// 	name:'那头',
+						// 	type:'会议',
+						// 	msg:'这是一个激烈讨论的会议'
+						// }
 					]
+				},
+				methods:{
+					pushContacts:function(item){
+						this.contacts.push(item);
+					},
+					clearContacts:function(){
+						this.contacts=[];
+					}
 				}
-			})
+			});
+			
+			 window.addEventListener('InitList',function(event){
+								// console.log('触发加载好友');
+				contactList.clearContacts();
+			 	for (let conor of event.detail) {
+					console.log(conor.id);
+					let item={};
+					item.id=conor.id;
+					console.log(item.id);
+					item.name=conor.user_name;
+					item.type=conor.type;
+					console.log(item.type);
+					item.msg='这个人并不懒，但是系统没有给他留言的机会';
+			 		contactList.pushContacts(item);
+			 	}
+			 });
+			mui.plusReady(function () {
+			   
+			});
 		</script>
 	</body>
 

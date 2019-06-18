@@ -17,9 +17,9 @@
 			mui.init()
 		</script>
 		<ul class="mui-table-view" id="chatList">
-			<li class="mui-table-view-cell mui-media" v-for="chat in chatList">
-				<a href="javascript:;" @tap="openChat">
-					<img class="mui-media-object mui-pull-left" src="../img/userPhoto.jpg">
+			<li class="mui-table-view-cell mui-media" v-for="(chat,index) in chatList">
+				<a href="javascript:;" @tap="openChat(index)">
+					<img class="mui-media-object mui-pull-left" :src="chat.type=='暗线'?'../img/userPhoto.jpg':'../img/roomPhoto.jpg'">
 					<div class="mui-media-body">
 						{{chat.name}}
 						<p class='mui-ellipsis'>{{chat.message}}</p>
@@ -31,5 +31,4 @@
 		</ul>
 		<script src="js/chat.js"></script>
 	</body>
-
 </html>
