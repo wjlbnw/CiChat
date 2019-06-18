@@ -8,26 +8,27 @@ let msgList=new Vue({
 	el:'#msg-list',
 	data:{
 		record:[
-			{
-					sender: 'zs',
-					type: 'sound',
-					content: 'http://192.168.3.12:8123/res/image/test.mp3'
-				},
-			{
-					sender: 'zs',
-					type: 'text',
-					content: '没有保存本地记录'
-				},
-				{
-					sender: 'zs',
-					type: 'image',
-					content: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1560447157668&di=aa9257054280012c14bd302f888860a0&imgtype=0&src=http%3A%2F%2Ff.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2Fd788d43f8794a4c240e9466f0ef41bd5ac6e39af.jpg'
-				},
-				{
-					sender: 'self',
-					type: 'text',
-					content: '没有保存本地记录'
-				}]
+			// {
+			// 		sender: 'zs',
+			// 		type: 'sound',
+			// 		content: 'http://192.168.3.12:8123/res/image/test.mp3'
+			// 	},
+			// {
+			// 		sender: 'zs',
+			// 		type: 'text',
+			// 		content: '没有保存本地记录'
+			// 	},
+			// 	{
+			// 		sender: 'zs',
+			// 		type: 'image',
+			// 		content: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1560447157668&di=aa9257054280012c14bd302f888860a0&imgtype=0&src=http%3A%2F%2Ff.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2Fd788d43f8794a4c240e9466f0ef41bd5ac6e39af.jpg'
+			// 	},
+			// 	{
+			// 		sender: 'self',
+			// 		type: 'text',
+			// 		content: '没有保存本地记录'
+			// 	}
+				]
 	},
 	methods:{
 		getRecord:function(){
@@ -187,7 +188,7 @@ let msgList=new Vue({
 		function send(msg) {
 			pushMes(msg);
 			msg.receiver=plus.webview.currentWebview().facer_name;
-			
+			msg.receiver_type=plus.webview.currentWebview().facer_type;
 			mui.fire(main,'send',msg);
 			
 			/* record.push(msg);

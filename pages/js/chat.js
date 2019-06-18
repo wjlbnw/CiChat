@@ -16,6 +16,7 @@ let listVue=new Vue({
 		},
 		openChat(index){
 			let item=this.chatList[index];
+			this.chatList[index].mesnumber=0;
 			mui.openWindow({
 					url: '../chat.html',
 					id: 'chatWindow-'+item.name,
@@ -31,7 +32,8 @@ let listVue=new Vue({
 					},
 					extras:{
 						facer:item.id,
-						facer_name:item.name
+						facer_name:item.name,
+						facer_type:item.type
 					}
 				});
 			
@@ -48,8 +50,25 @@ let listVue=new Vue({
 		},
 		incMessageN(mes){
 			this.chatList.forEach((item, index)=>{
-				if(item.name==mes.sender){
+				if(mes.receiver_type!='会议'&&item.name==mes.sender){
 					item.mesnumber++;
+					if(mes.type=='sound'){
+						item.message=mes.sender+':[语音]';
+					}else if(mes.type=='image'){
+						item.message=mes.sender+':[图片]';
+					}else{
+						item.message=mes.sender+':'+mes.content;
+					}
+					
+				}else if(mes.receiver_type=='会议'&&item.name==mes.receiver){
+					item.mesnumber++;
+					if(mes.type=='sound'){
+						item.message=mes.sender+':[语音]';
+					}else if(mes.type=='image'){
+						item.message=mes.sender+':[图片]';
+					}else{
+						item.message=mes.sender+':'+mes.content;
+					}
 				}
 			})
 		}

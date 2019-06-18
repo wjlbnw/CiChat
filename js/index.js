@@ -72,13 +72,28 @@ document.addEventListener('plusready', function(){
 	});
 	socket.on('receive',function(message){
 		console.log('收到消息，来自'+message.sender);
-		let chating=plus.webview.getWebviewById('chatWindow-'+message.sender);
+		let chating=null;
+		if(message.receiver_type!='会议'){
+			chating=plus.webview.getWebviewById('chatWindow-'+message.sender);
+		}else{
+			chating=plus.webview.getWebviewById('chatWindow-'+message.receiver);
+		}
 		console.log(JSON.stringify(message));
 		if(chating){
 			if(message.type=='sound'||message.type=='image'){
 				message.content=serURL()+message.content;
 				console.log(JSON.stringify(message.content));
 			}
+			mui.fire(chating,'receive',message);
+		}else {
+			chating=plus.webview.create('chat.html',
+			'chatWindow-'+(message.receiver_type!='会议'?message.sender:message.receiver),
+			{},
+			{
+				facer_name:(message.receiver_type!='会议'?message.sender:message.receiver),
+				facer_type:message.receiver_type
+			});
+			
 			mui.fire(chating,'receive',message);
 		}
 		mui.fire(pages[0],'receive',message);
