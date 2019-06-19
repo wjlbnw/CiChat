@@ -28,16 +28,107 @@
 			    <input type="search" id="searchInput" onkeyup="enterSearch(event)" class="mui-input-clear" placeholder="搜索用户/房间">
 			</div>
 		</header>
-		<div class="mui-content">
+		<div class="mui-content" id="list">
 			<ul class="mui-table-view">
-				<li class="mui-table-view-cell">Item 1</li>
+				<!-- <li class="mui-table-view-cell">Item 1</li>
 				<li class="mui-table-view-cell">Item 2</li>
-				<li class="mui-table-view-cell">Item 3</li>
+				<li class="mui-table-view-cell">Item 3</li> -->
+				<li class="mui-table-view-cell" v-for="item in list" @tap="addCon(item.id,item.user_name)">{{item.user_name}}</li>
 			</ul>
 		</div>
 			
 		<script src="../js/vue.min.js"></script>
 		<script type="text/javascript">
+			
+			
+			function serURL(){
+				let serverIP=localStorage.getItem('server-ip-config');
+				let url=null;
+				if(serverIP){
+					serverIP=JSON.parse(serverIP);
+					url='http://'+serverIP.add+':'+serverIP.port;
+				}
+				return url;
+			}
+			
+			
+			let list=new Vue({
+				el:'#list',
+				data:{
+					list:[{
+						id:null,
+						user_name:'name'
+					}]
+				},
+				methods:{
+					setList:function(list){
+						this.list=list;
+					},
+					addCon:function(id,name){
+						
+						if(!confirm('你确定要添加'+name+'这个联系人')){
+							return ;
+						}
+						mui.toast('添加联系人');
+						let url=serURL();
+						if(url){
+							mui.ajax(url+'/addCon',{
+										data:{
+											f1_name:JSON.parse(plus.storage.getItem('user_info')).username,
+											f2:id
+										},
+										dataType:'json',//服务器返回json格式数据
+										type:'post',//HTTP请求类型
+										timeout:10000,//超时时间设置为10秒；
+										headers:{'Content-Type':'application/json'},	              
+										success:function(data){
+											//服务器返回响应，根据响应结果，分析是否登录成功；
+											console.log(JSON.stringify(data));
+											mui.alert(data.message);
+											
+										},
+										error:function(xhr,type,errorThrown){
+											//异常处理；
+											mui.toast('服务器未响应');
+											console.log(type);
+											
+										}
+									});
+							
+						}
+						
+						
+						
+					}
+				}
+			});
+			
+			let url=serURL();
+			if(url){
+				mui.ajax(url+'/searchUsers',{
+							data:{
+								
+							},
+							dataType:'json',//服务器返回json格式数据
+							type:'post',//HTTP请求类型
+							timeout:10000,//超时时间设置为10秒；
+							headers:{'Content-Type':'application/json'},	              
+							success:function(data){
+								//服务器返回响应，根据响应结果，分析是否登录成功；
+								console.log(JSON.stringify(data));
+								list.setList(data.list);
+								
+							},
+							error:function(xhr,type,errorThrown){
+								//异常处理；
+								mui.toast('服务器未响应');
+								console.log(type);
+								
+							}
+						});
+				
+			}
+			
 			 function enterSearch(event){
 					if(event.keyCode == 13) {//用户点击回车的事件号为13
 						var keyword = document.getElementById('searchInput').value;

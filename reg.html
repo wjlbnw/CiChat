@@ -22,8 +22,8 @@
 		<div class="mui-content">
 			<form class="mui-input-group">
 				<div class="mui-input-row">
-					<label>账号</label>
-					<input id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入账号">
+					<label>名称</label>
+					<input id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入用户名">
 				</div>
 				<div class="mui-input-row">
 					<label>密码</label>
@@ -39,13 +39,80 @@
 				</div>-->
 			</form>
 			<div class="mui-content-padded">
-				<button id='reg' class="mui-btn mui-btn-block mui-btn-primary">注册</button>
+				<button id='reg' data-loading-text="等待..." class="mui-btn mui-btn-block mui-btn-primary">注册</button>
 			</div>
 			<div class="mui-content-padded">
 				
 			</div>
 		</div>
-		
+		<script>
+			function serURL(){
+				let serverIP=localStorage.getItem('server-ip-config');
+				let url=null;
+				if(serverIP){
+					serverIP=JSON.parse(serverIP);
+					url='http://'+serverIP.add+':'+serverIP.port;
+				}
+				return url;
+			}
+			
+			
+			mui('.mui-content-padded').on('tap','#reg',function(){
+				let username=document.querySelector('#account').value;
+				let password=document.querySelector('#password').value;
+				let password_confirm=document.querySelector('#password_confirm').value;
+				
+				if(username.length<3){
+					mui.toast('用户名太短');
+					return;
+				}
+				if(password==''){
+					mui.toast('请输入密码');
+					return;
+				}
+				
+				if(password!=password_confirm){
+					mui.toast('两密码不一致');
+					return;
+				}
+				let url=serURL();
+				if(!url){
+					mui.toast('请先设置IP');
+					return;
+				}
+				let but=this;
+				mui(but).button('loading');
+				mui.ajax(url+'/register',{
+							data:{
+								username:username,
+								password:password
+							},
+							dataType:'json',//服务器返回json格式数据
+							type:'post',//HTTP请求类型
+							timeout:10000,//超时时间设置为10秒；
+							headers:{'Content-Type':'application/json'},	              
+							success:function(data){
+								//服务器返回响应，根据响应结果，分析是否登录成功；
+								if(data.result){
+									mui.toast('注册成功');
+									
+								}else{
+									mui.toast(data.message)
+								}
+								mui(but).button('reset');
+								
+							},
+							error:function(xhr,type,errorThrown){
+								//异常处理；
+								mui.toast('服务器未响应');
+								console.log(type);
+								mui(but).button('reset');
+							}
+						});
+				
+				
+			});
+		</script>
 		
 		
 		
